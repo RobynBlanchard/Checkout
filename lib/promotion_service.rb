@@ -7,6 +7,8 @@ class PromotionService
   private
 
   def apply_promotions(items)
-    TravelCardPromotion.new.apply_promotion(items)
+    codes_and_prices = TravelCardPromotion.new.apply_promotion(items)
+    total1 = calculate_total(codes_and_prices)
+    total = SpendOverSixtyPromotion.new.apply_promotion(total1)
   end
 end

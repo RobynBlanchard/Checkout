@@ -1,5 +1,7 @@
 require './lib/promotion_service'
 require './lib/product'
+require './lib/spend_over_sixty_promotion'
+require './lib/travel_card_promotion'
 
 class Checkout
 
@@ -17,6 +19,11 @@ class Checkout
   end
 
   def total
-    items.reduce(0) { |total, item| total + item.price }
+    if promotion_service.nil?
+      return "%0.2f" % items.reduce(0) { |total, item| total + item.price }
+    else
+      return "%0.2f" % promotion_service.apply_promotions(items)
+    end
+    # TODO - clear items after checkout
   end
 end
