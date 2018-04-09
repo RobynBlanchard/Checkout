@@ -4,7 +4,8 @@ require "product"
 
 describe Checkout do
   let(:item) { double("Product", price: 10.00) }
-  subject { described_class.new(PromotionService) }
+  let(:promotion_service) { PromotionService }
+  subject { described_class.new(promotion_service) }
 
   describe '#new' do
     it "defaults the promotion service to nil" do
@@ -13,8 +14,7 @@ describe Checkout do
     end
 
     it "accepts a promotion service at creation" do
-      expect(subject.promotion_service).to be_an_instance_of(PromotionService)
-      expect(subject.promotion_service).to be_truthy
+      expect(subject.promotion_service).to eq promotion_service
     end
   end
 
@@ -30,17 +30,18 @@ describe Checkout do
   end
 
   describe '#total' do
-    # TODO - add contexts - with promotional rules and without
     context "no items" do
       it "returns to total price of the products as 0" do
-        expect(subject.total).to eq 0
+        allow(subject).to receive(:discount_from_promotions).and_return(0)
+        expect(subject.total).to eq "0.00"
       end
     end
 
     context "one or more items" do
       it "returns the total price of the products" do
         subject.scan(item)
-        expect(subject.total).to eq 10.00
+        allow(subject).to receive(:discount_from_promotions).and_return(0)
+        expect(subject.total).to eq "10.00"
       end
     end
   end

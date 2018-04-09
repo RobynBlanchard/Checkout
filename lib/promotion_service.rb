@@ -1,14 +1,15 @@
+require './lib/spend_over_sixty_promotion'
+require './lib/travel_card_promotion'
+
 class PromotionService
-  def calculate_total(items)
-    codes_and_prices = apply_promotions(items)
-    codes_and_prices.reduce(0) { |total, item| total + item[:price] }
-  end
 
-  private
+  AVAILABLE_PROMOTIONS = [TravelCardPromotion, SpendOverSixtyPromotion]
 
-  def apply_promotions(items)
-    codes_and_prices = TravelCardPromotion.new.apply_promotion(items)
-    total1 = calculate_total(codes_and_prices)
-    total = SpendOverSixtyPromotion.new.apply_promotion(total1)
+  def self.discounts(items, total)
+    discount = 0
+    AVAILABLE_PROMOTIONS.each do |promotion|
+      discount += promotion.get_discount(items, total)
+    end
+    discount
   end
 end

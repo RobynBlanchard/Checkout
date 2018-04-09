@@ -2,38 +2,29 @@ require "travel_card_promotion"
 require "product"
 
 describe TravelCardPromotion do
-  let(:item1) { double("Product", code: 001, price: 9.25) }
-  let(:item2) { double("Product", code: 002, price: 45.00) }
-  let(:item3) { double("Product", code: 003, price: 19.95) }
+  let(:item1) { double("Product", code: 001) }
+  let(:item2) { double("Product", code: 002) }
+  let(:total) { 20 }
 
-  subject { described_class.new }
+  subject { described_class }
 
-  describe "apply_promotion" do
-    context "items not applicable to promotion" do
-      it "returns a map of product codes and prices with no promotion applied" do
-        items = [item1]
-        expected_result = [{"code": 001, "price": 9.25}]
-        expect(subject.apply_promotion(items)).to eq expected_result
-      end
-
-      it "returns a map of product codes and prices with no promotion applied" do
-        items = [item2, item3]
-        expected_result = [{"code": 002, "price": 45.00}, {"code": 003, "price": 19.95}]
-        expect(subject.apply_promotion(items)).to eq expected_result
+  describe ".get_discount" do
+    context "promo valid for items" do
+      it "returns a discount greater than 0" do
+        items = [item1, item1]
+        # allow_(subject).to receive(:promo_valid_for_basket?).and_return true
+        # allow(subject).to receive(:calculate_discount).and_return 10
+        TravelCardPromotion.get_discount(items,total)
+        # expect(subject.get_discount(items, total)).to eq 10
       end
     end
 
-    context "basket applicable to promotion" do
-      it "returns a map of product codes and prices with a promotion applied" do
-        items = [item1, item1]
-        expected_items = [{"code": 001, "price": 8.50}, {"code": 001, "price": 8.50}]
-        expect(subject.apply_promotion(items)).to eq expected_items
-      end
+    context "promo not valid for items" do
+      it "returns a discount of 0" do
+        items = [item1, item2]
+        allow(subject).to receive(:promo_valid_for_basket?).and_return false
 
-      it "returns a map of product codes and prices with a promotion applied" do
-        items = [item1, item3, item1]
-        expected_items = [{"code": 001, "price": 8.50}, {"code": 003, "price": 19.95}, {"code": 001, "price": 8.50}]
-        expect(subject.apply_promotion(items)).to eq expected_items
+        expect(subject.get_discount(items, total)).to eq 0
       end
     end
   end

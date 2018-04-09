@@ -3,20 +3,22 @@ require './lib/product'
 class TravelCardPromotion
 
   ITEM_CODE = 001
-  NEW_PRICE = 8.50
+  MINIMUM_NUMBER_REQUIRED = 2
+  DISCOUNT_PER_PRODUCT = 0.75
 
-  def apply_promotion(items)
-    update_items_price(items)
+  def self.get_discount(items, total)
+    if promo_valid_for_basket?(items)
+      calculate_discount(items)
+    end
   end
 
   private
 
-  def apply_promo?(item, items)
-    count = items.count { |item| item.code == 001 }
-    (count > 1 && item.code == ITEM_CODE) ? true : false
+  def promo_valid_for_basket?(items)
+    items.count { |item| item.code == ITEM_CODE} >= MINIMUM_NUMBER_REQUIRED
   end
 
-  def update_items_price(items)
-    items.map{ |item| (apply_promo?(item, items)) ? {"code": item.code, "price": NEW_PRICE} :  {"code": item.code, "price": item.price}}
+  def calculate_discount(items)
+    items.reduce(0) { |discount, item| discount + DISCOUNT_PER_PRODUCT if item.code == ITEM_CODE}
   end
 end

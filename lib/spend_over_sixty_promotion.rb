@@ -1,5 +1,9 @@
-class SpendOverSixtyPromotion 
-  def apply_promotion(total)
-    total > 60 ? total*0.9 : total
+class SpendOverSixtyPromotion
+
+  PERCENTAGE_DISCOUNT = 0.1
+  MINIMUM_SPEND = 60
+
+  def self.get_discount(items, total)
+    total > MINIMUM_SPEND ? total*PERCENTAGE_DISCOUNT : 0
   end
 end
