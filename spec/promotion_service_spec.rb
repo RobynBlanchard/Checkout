@@ -1,8 +1,8 @@
 require "promotion_service"
-require "product"
+require "item"
 
 describe PromotionService do
-  let(:item) { double(Product) }
+  let(:item) { double(Item) }
   let(:total) { 10 }
   subject { described_class }
 

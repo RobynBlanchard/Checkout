@@ -1,4 +1,4 @@
-class Product
+class Item
 
   attr_reader :code, :price
 

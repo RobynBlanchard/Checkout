@@ -1,9 +1,9 @@
 require "checkout"
 require "promotion_service"
-require "product"
+require "item"
 
 describe Checkout do
-  let(:item) { double("Product", price: 10.00) }
+  let(:item) { double("Item", price: 10.00) }
   let(:promotion_service) { PromotionService }
   subject { described_class.new(promotion_service) }
 
@@ -31,14 +31,14 @@ describe Checkout do
 
   describe '#total' do
     context "no items" do
-      it "returns to total price of the products as 0" do
+      it "returns to total price of the items as 0" do
         allow(subject).to receive(:discount_from_promotions).and_return(0)
         expect(subject.total).to eq "0.00"
       end
     end
 
     context "one or more items" do
-      it "returns the total price of the products" do
+      it "returns the total price of the items" do
         subject.scan(item)
         allow(subject).to receive(:discount_from_promotions).and_return(0)
         expect(subject.total).to eq "10.00"

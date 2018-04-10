@@ -1,8 +1,8 @@
 require "spend_over_sixty_promotion"
-require "product"
+require "item"
 
 describe SpendOverSixtyPromotion do
-  let(:item) { double(Product) }
+  let(:item) { double(Item) }
   let(:total) { 70 }
 
   subject { described_class }

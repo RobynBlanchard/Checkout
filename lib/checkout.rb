@@ -1,5 +1,5 @@
 require './lib/promotion_service'
-require './lib/product'
+require './lib/item'
 require 'yaml'
 
 class Checkout
@@ -9,7 +9,7 @@ class Checkout
   def initialize(promotion_service=nil)
     @promotion_service = promotion_service
     @items = []
-    # @products = load_product_catalogue
+    # @items = load_item_catalogue
   end
 
   def scan(item)
@@ -22,17 +22,17 @@ class Checkout
 
   private
 
-  # def load_product_catalogue
-  #   products = {}
-  #   yaml_hash = YAML.load_file("./lib/products.yml")
-  #   yaml_hash.each do |product|
-  #     item = Product.new(code: product["code"],
-  #       price: product["price"],
-  #       title: product["title"]
+  # def load_item_catalogue
+  #   items = {}
+  #   yaml_hash = YAML.load_file("./lib/items.yml")
+  #   yaml_hash.each do |item|
+  #     item = Item.new(code: item["code"],
+  #       price: item["price"],
+  #       title: item["title"]
   #     )
-  #     products[product["code"]] = item
+  #     items[item["code"]] = item
   #   end
-  #   products
+  #   items
   # end
 
   def initial_total
